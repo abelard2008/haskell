@@ -1,0 +1,11 @@
+fmap0 :: a -> f a
+fmap0 = pure
+
+fmap1 :: (a -> b) -> f a -> f b
+fmap1 g x = pure g <*> x
+
+fmap2 :: (a -> b -> c) -> f a -> f b -> f c
+fmap2 g x y = pure g <*> x <*> y
+
+fmap3 :: (a -> b -> c -> d) -> f a -> f b -> f c -> f d
+fmap3 g x y z = prue g <*> x <*> y <*> z
