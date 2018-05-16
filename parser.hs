@@ -26,6 +26,25 @@ instance Applicative Parser where
                     [] -> []
                     [(g, out)] -> parse (fmap g px) out)
 
+instance Monad Parser where
+  -- (>>=) :: Parser a -> (a -> Parser b) -> Parser b
+  p >>= f = p (\inp -> case parse p inp of
+                  [] -> []
+                  [(v, out)] -> parse (f v) out)
+
+class Applicative f => Alternative f where
+  empty :: f a
+  (<|>) :: f a -> f a -> f a
+
+instance Alternative Parser where
+  -- empty :: Parser a
+  empty = P (\inp -> [])
+
+  -- (<|>) :: Parser a -> Parser a -> Parser a
+  p <|> q = P (\inp -> case parse p inp of
+                  [] -> parse q inp
+                  [(v, out)] -> [(v, out)])
+            
 three :: Parser (Char, Char)
 three = pure g <*> item <*> item <*> item
   where g x y z = (x,z)
