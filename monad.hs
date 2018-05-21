@@ -26,12 +26,23 @@ evalA (Div x y) = pure safediv <*> 8 <*> 4 -- <*> evalA y
 
 evalM :: Expr -> Maybe Int
 evalM (Val n) = Just n
-evalM (Div x y) = evalM x >>= \n ->
+evalM (Div x y) = evalM x >>= \d ->
                                 evalM y >>= \m ->
-                                              safediv n m
+                                              safediv d m
 
 evalM1 :: Expr -> Maybe Int
 evalM1 (Val n) = Just n
 evalM1 (Div x y) = do n <- eval x
                       m <- eval y
                       safediv n m
+
+evalM2 :: Expr -> Maybe Int
+evalM2 (Val n) = Just n
+evalM2 (Div x y) = do n <- evalM2 x
+                      m <- evalM2 y
+                      safediv n m
+
+pairs :: [Int] -> [Int] -> [(Int)]
+pairs xs ys = do x <- xs
+                 y <- ys
+                 return (x+y)
