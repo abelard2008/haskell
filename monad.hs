@@ -46,3 +46,11 @@ pairs :: [Int] -> [Int] -> [(Int)]
 pairs xs ys = do x <- xs
                  y <- ys
                  return (x+y)
+
+main1 = do line <- getLine
+           let line' = reverse line
+           putStrLn $ "you said " ++ line' ++ " backwords!"
+           putStrLn $ "Yes, you really said " ++ line' ++ " backwards!"
+           return 3
+
+          
