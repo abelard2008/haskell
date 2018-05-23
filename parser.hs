@@ -155,3 +155,14 @@ eval xs = case (parse expr xs) of
             [(n, [])] -> n
             [(_,out)] -> error ("Unused input " ++ out)
             []        -> error "Invalid input"
+
+testP :: Parser Char
+testP = pure g <*> item
+        where g x = x
+
+g x y = (toUpper x, toUpper y)
+
+
+ppp = P (\inq -> case (parse (P (\inp -> parse (fmap g item) inp)) inq) of
+        [] -> []
+        [(v,out)] -> parse (fmap v item) out)
